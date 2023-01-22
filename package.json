@@ -1,12 +1,12 @@
 {
   "name": "eslint-plugin-module-structure",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Enforces module structure public private capabilities on code.",
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "prettier": "prettier --write .",
-    "test": "jest",
+    "test": "jest testing",
     "prePublish": "npm run prettier && npm run test && npm run build"
   },
   "keywords": [

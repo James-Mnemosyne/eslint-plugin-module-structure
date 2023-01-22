@@ -11,13 +11,20 @@ export function importingFileIsInsideOfSameModulePrivate(
   const splitImportingPath = importingPath
     .slice(0, importingPath.lastIndexOf('/private/'))
     .split('/');
-  const splitImportedPath = importedPath
-    .slice(0, importedPath.lastIndexOf('/private/'))
-    .replace(/^@/, '')
-    .split('/');
+  const splitImportedPath = importedPath.replace(/^@/, '').split('/');
+  const poppedPathSegments = [];
   while (splitImportedPath.length && last(splitImportedPath) !== last(splitImportingPath)) {
-    splitImportedPath.pop();
+    poppedPathSegments.push(splitImportedPath.pop());
   }
+
+  // If there was a private segment removed, and it wasn't the last one popped, it's not just above the correct module. (e.g. nested).
+  if (
+    poppedPathSegments?.indexOf('private') !== -1 &&
+    poppedPathSegments?.indexOf('private') !== poppedPathSegments.length - 1
+  ) {
+    return false;
+  }
+
   if (!splitImportedPath.length) {
     return false;
   }
@@ -30,5 +37,6 @@ export function importingFileIsInsideOfSameModulePrivate(
       return false;
     }
   }
+
   return true;
 }

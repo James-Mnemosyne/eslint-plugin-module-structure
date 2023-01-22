@@ -8,10 +8,21 @@ export function importingFileIsAtModuleRoot(importingPath: string, importedPath:
   if (!importedPath.endsWith('/private') && importedPath.lastIndexOf('/private/') === 1) {
     return true;
   }
-  const splitImportingPath = importingPath.split('/');
+  // Remove file name. Only leave directory path.
+  const truncatedImportingPath = importingPath.slice(0, importingPath.lastIndexOf('/'));
+  const splitImportingPath = truncatedImportingPath.split('/');
   const splitImportedPath = importedPath.replace(/^@/, '').split('/');
+  const poppedPathSegments = [];
   while (splitImportedPath.length && last(splitImportedPath) !== last(splitImportingPath)) {
-    splitImportedPath.pop();
+    poppedPathSegments.push(splitImportedPath.pop());
+  }
+
+  // If there was a private segment removed, and it wasn't the last one popped, it's not just above the correct module. (e.g. nested).
+  if (
+    poppedPathSegments?.indexOf('private') !== -1 &&
+    poppedPathSegments?.indexOf('private') !== poppedPathSegments.length - 1
+  ) {
+    return false;
   }
   if (!splitImportedPath.length) {
     return false;
@@ -24,5 +35,6 @@ export function importingFileIsAtModuleRoot(importingPath: string, importedPath:
       return false;
     }
   }
+
   return true;
 }

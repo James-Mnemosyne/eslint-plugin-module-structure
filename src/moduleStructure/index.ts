@@ -1,29 +1,7 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import type { Rule } from 'eslint';
-import { isRelativePath, pathIsInsideOfModulePrivate, WithContext } from './helpers';
-import { importingFileIsAtModuleRoot } from './importingFileIsAtModuleRoot';
-import { importingFileIsInsideOfSameModulePrivate } from './importingFileIsInsideOfSameModulePrivate';
-import { relativePathDoesNotPassThroughAdditionalPrivate } from './relativePathDoesNotPassThroughAdditionalPrivate';
-
-function importingFileIsInsideOfSameModule(importingPath: string, importedPath: string) {
-  // Just defensive coding.
-  if (!pathIsInsideOfModulePrivate(importedPath)) {
-    return true;
-  }
-  if (
-    isRelativePath(importedPath) &&
-    relativePathDoesNotPassThroughAdditionalPrivate(importingPath, importedPath)
-  ) {
-    return true;
-  }
-  if (importingFileIsAtModuleRoot(importingPath, importedPath)) {
-    return true;
-  }
-  if (importingFileIsInsideOfSameModulePrivate(importingPath, importedPath)) {
-    return true;
-  }
-  return false;
-}
+import { WithContext } from './helpers';
+import { importingFileIsInsideOfSameModule } from './importingFileIsInsideOfSameModule';
 
 const ImportDeclaration: WithContext<Rule.NodeListener['ImportDeclaration']> = function (
   node,
