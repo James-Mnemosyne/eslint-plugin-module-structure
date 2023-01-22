@@ -1,4 +1,1 @@
-export declare function importingFileIsInsideOfSameModulePrivate(
-  importingPath: string,
-  importedPath: string
-): boolean;
+export declare function importingFileIsInsideOfSameModulePrivate(importingPath: string, importedPath: string): boolean;

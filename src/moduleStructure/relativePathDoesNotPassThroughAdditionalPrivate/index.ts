@@ -11,7 +11,19 @@ export function relativePathDoesNotPassThroughAdditionalPrivate(
   const truncatedImportingPath = importingPath.slice(0, importingPath.lastIndexOf('/'));
   const denormalizedFullImportedPath = path.join(truncatedImportingPath, importedPath);
   const fullImportedPath = path.normalize(denormalizedFullImportedPath);
-  const normalizedRelativeImportPath = fullImportedPath.replace(truncatedImportingPath, '');
+
+  const truncatedImportingPathSplit = truncatedImportingPath.split('/');
+  const fullImportedPathSplit = fullImportedPath.split('/');
+
+  while (
+    truncatedImportingPathSplit?.length &&
+    truncatedImportingPathSplit[0] === fullImportedPathSplit[0]
+  ) {
+    truncatedImportingPathSplit.shift();
+    fullImportedPathSplit.shift();
+  }
+
+  const normalizedRelativeImportPath = `/${fullImportedPathSplit.join('/')}`;
   // We want to avoid the first private dir, if it is a direct subset.
   const normalizedDeprivatizedPath =
     normalizedRelativeImportPath === '/private' ||
