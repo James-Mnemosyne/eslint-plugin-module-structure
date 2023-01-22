@@ -220,6 +220,46 @@ describe('importingFileIsInsideOfSameModule', () => {
       const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
       expect(result).toBeTruthy();
     });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          └── module/
+              └── private/
+                  ├── thing0/
+                  │   └── thing1/
+                  │       └── index.ts **
+                  └── thing2/
+                      └── thing3/
+                          └── index.ts *
+    */
+    it('for paired nested file in modules, absolute', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/module/private/thing2/thing3/index.ts';
+      const importedPath = 'module/private/thing0/thing1';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeTruthy();
+    });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          └── module/
+              └── private/
+                  ├── thing0/
+                  │   └── thing1/
+                  │       └── index.ts **
+                  └── thing2/
+                      └── thing3/
+                          └── index.ts *
+    */
+    it('for nested files in modules, relative', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/module/private/thing2/thing3/index.ts';
+      const importedPath = '../../thing0/thing1';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeTruthy();
+    });
   });
 
   describe('returns false', () => {
