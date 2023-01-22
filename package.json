@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-module-structure",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Enforces module structure public private capabilities on code.",
   "main": "dist/src/index.js",
   "scripts": {

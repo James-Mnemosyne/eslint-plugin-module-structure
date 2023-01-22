@@ -8,13 +8,43 @@ describe('importingFileIsInsideOfSameModule', () => {
      /Users/jamesstrynkowski/projects/module-structure-testbed
       └── src/
           ├── module/
-          │   ├── index.ts **
+          │   └── index.ts **
           └── index.ts *
     */
     it('if import is not in a private module', () => {
       const importingPath =
         '/Users/jamesstrynkowski/projects/module-structure-testbed/src/index.ts';
       const importedPath = 'src/module';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeTruthy();
+    });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          ├── module/
+          │   └── index.ts **
+          └── index.ts *
+    */
+    it('if import is not in a private module wonky absolute', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/index.ts';
+      const importedPath = 'src/../src/module1/../../src/module';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeTruthy();
+    });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          ├── module/
+          │   └── index.ts **
+          └── index.ts *
+    */
+    it('if import is not in a private module wonky relative', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/index.ts';
+      const importedPath = './../src/module1/../../src/module';
       const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
       expect(result).toBeTruthy();
     });
@@ -348,6 +378,42 @@ describe('importingFileIsInsideOfSameModule', () => {
       const importingPath =
         '/Users/jamesstrynkowski/projects/module-structure-testbed/src/module0/private/index.ts';
       const importedPath = '../../module1/private';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeFalsy();
+    });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          ├── module0/
+          │   └── private/
+          │       └── index.ts *
+          └── module1/
+              └── private/
+                      └── index.ts **
+    */
+    it('if import is calling out of private module into separate private module, wonky absolute', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/module0/private/index.ts';
+      const importedPath = 'src/module1/private/../../module1/.//private';
+      const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
+      expect(result).toBeFalsy();
+    });
+
+    /*
+     /Users/jamesstrynkowski/projects/module-structure-testbed
+      └── src/
+          ├── module0/
+          │   └── private/
+          │       └── index.ts *
+          └── module1/
+              └── private/
+                      └── index.ts **
+    */
+    it('if import is calling out of private module into separate private module, wonky relative', () => {
+      const importingPath =
+        '/Users/jamesstrynkowski/projects/module-structure-testbed/src/module0/private/index.ts';
+      const importedPath = '..//./../module1/private/../../module1/.//private';
       const result = importingFileIsInsideOfSameModule(importingPath, importedPath);
       expect(result).toBeFalsy();
     });

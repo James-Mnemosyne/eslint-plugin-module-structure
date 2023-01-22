@@ -23,6 +23,7 @@ I'll type out a longer doc later, but with this plugin, you can now add a /priva
 ### Examples:
 
 \* Denotes file that is importing
+
 \*\* Denotes file that is being imported.
 
 #### Passing:
