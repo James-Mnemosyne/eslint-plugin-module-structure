@@ -209,7 +209,7 @@ Perusing the idea of allowing custom names for the directories, but I don't thin
 
 ### Github
 
-https://github.com/James-Mnemosyne/eslint-plugin-module-structure/tree/master
+https://github.com/TitanInvest/eslint-plugin-module-structure
 
 ### NPM
 
